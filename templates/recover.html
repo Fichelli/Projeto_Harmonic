@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Recuperar Senha — Harmonic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body id="page-login">
+  <div class="hm-bg" aria-hidden="true">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+    <div id="eq" class="hm-eq" aria-hidden="true"></div>
+  </div>
+
+  <main class="hm-shell" role="main">
+    <section class="hm-login">
+      <div class="hm-login__brand">
+        <div class="hm-logo" aria-hidden="true">
+          <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Logo Harmonic">
+        </div>
+        <h1 class="hm-title hm-login__title">Recuperar senha</h1>
+        <p class="hm-subtitle hm-login__subtitle">defina uma nova senha usando seu e-mail</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash">
+            {% for category, msg in messages %}
+              <div class="flash__item flash__item--{{ category }}">{{ msg }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form class="hm-form" method="POST" action="{{ url_for('recover') }}">
+        <label class="hm-field">
+          <span class="hm-field__label">E-mail cadastrado</span>
+          <input type="email" name="email" class="hm-input" placeholder="email@exemplo.com" required>
+        </label>
+
+        <div class="hm-grid-2">
+          <label class="hm-field">
+            <span class="hm-field__label">Nova senha</span>
+            <input type="password" name="password" class="hm-input" placeholder="••••••••" required>
+          </label>
+          <label class="hm-field">
+            <span class="hm-field__label">Confirmar nova senha</span>
+            <input type="password" name="confirm_password" class="hm-input" placeholder="repita a senha" required>
+          </label>
+        </div>
+
+        <div class="hm-actions hm-actions--column">
+          <button type="submit" class="hm-btn hm-btn--primary">Atualizar senha</button>
+          <a class="hm-btn hm-btn--outline" href="{{ url_for('login') }}">Voltar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hm-foot">
+    <small>© <span id="year"></span> Harmonic. Todos os direitos reservados.</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Harmonic — Iniciando...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body{background:#0b0b0f; display:flex; align-items:center; justify-content:center; height:100svh; overflow:hidden}
+    .splash-logo{ width:180px; opacity:0; transform:scale(.85); animation:fadeInOut 2.5s ease-in-out forwards}
+    @keyframes fadeInOut{0%{opacity:0;transform:scale(.85)} 25%{opacity:1;transform:scale(1)} 75%{opacity:1;transform:scale(1.06)} 100%{opacity:0;transform:scale(1.16)}}
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Harmonic" class="splash-logo">
+  <script>
+    setTimeout(()=>{ window.location.href = "{{ url_for('inicio') }}"; }, 2500);
+  </script>
+</body>
+</html>

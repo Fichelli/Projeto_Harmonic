@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Harmonic — Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ouça, envie e descubra músicas no Harmonic." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body id="page-home">
+
+  <!-- Fundo decorativo -->
+  <div class="hm-bg" aria-hidden="true">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+    <div id="eq" class="hm-eq" aria-hidden="true"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="hm-header">
+    <div class="hm-logo">
+      <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Logo Harmonic">
+      </a>
+    </div>
+
+    <div class="hm-search">
+      <input type="text" placeholder="Buscar músicas, artistas..." id="searchInput">
+    </div>
+
+    <div class="hm-user" id="userMenuToggle">
+      <span class="hm-user-name">Olá, {{ user_name }}</span>
+      <div class="hm-user-menu" id="userMenu">
+        <a href="{{ url_for('profile') }}">Perfil</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="hm-main">
+
+    <!-- 1) Descubra novas músicas -->
+    <section id="hm-discover">
+      <h2 class="hm-section-title">Descubra novas músicas</h2>
+
+      <div class="hm-carousel">
+        <button class="hm-scroll-btn left" data-target="discover" aria-label="voltar">‹</button>
+
+        <div class="hm-scroll-container" id="carousel-discover">
+          {% if discover_tracks %}
+            {% for track in discover_tracks %}
+              <div class="hm-music-card">
+
+                {% if track.cover_url %}
+                  <img src="{{ track.cover_url }}" alt="Capa de {{ track.title }}" class="hm-music-cover">
+                {% else %}
+                  <div class="hm-music-cover hm-music-cover--placeholder">🎵</div>
+                {% endif %}
+
+                <div class="hm-music-info">
+                  <div class="hm-music-title">{{ track.title }}</div>
+
+                  <!-- ARTISTA SEMPRE EXIBE artist_name -->
+                  {% if track.artist_name %}
+                    <div class="hm-music-artist">{{ track.artist_name }}</div>
+                  {% endif %}
+                </div>
+
+                <form method="POST"
+                      action="{{ url_for('toggle_favorite', music_id=track.id) }}"
+                      class="hm-fav-form">
+                  <button type="submit" class="hm-fav-btn">
+                    {% if track.id in favorite_ids %}★{% else %}☆{% endif %}
+                  </button>
+                </form>
+
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>Nenhuma música cadastrada ainda.</p>
+          {% endif %}
+        </div>
+
+        <button class="hm-scroll-btn right" data-target="discover" aria-label="avançar">›</button>
+      </div>
+    </section>
+
+    <!-- 2) Suas músicas (artista / admin) -->
+    {% if user_role == 'artist' or user_role == 'admin' %}
+    <section id="hm-artist-panel">
+      <h2 class="hm-section-title">Suas músicas</h2>
+
+      <a href="{{ url_for('crud_msc') }}" class="hm-btn hm-btn--primary">Enviar nova música</a>
+
+      <div class="hm-carousel hm-carousel--artist">
+        <button class="hm-scroll-btn left" data-target="artist" aria-label="voltar">‹</button>
+
+        <div class="hm-scroll-container" id="carousel-artist">
+          {% if artist_tracks %}
+            {% for track in artist_tracks %}
+              <div class="hm-music-card">
+                
+                {% if track.cover_url %}
+                  <img src="{{ track.cover_url }}" alt="Capa de {{ track.title }}" class="hm-music-cover">
+                {% else %}
+                  <div class="hm-music-cover hm-music-cover--placeholder">🎵</div>
+                {% endif %}
+
+                <div class="hm-music-info">
+                  <div class="hm-music-title">{{ track.title }}</div>
+                  <div class="hm-music-artist">{{ track.genre }}</div>
+                </div>
+
+                <form method="POST"
+                      action="{{ url_for('toggle_favorite', music_id=track.id) }}"
+                      class="hm-fav-form">
+                  <button type="submit" class="hm-fav-btn">
+                    {% if track.id in favorite_ids %}★{% else %}☆{% endif %}
+                  </button>
+                </form>
+
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>Você ainda não enviou nenhuma música.</p>
+          {% endif %}
+        </div>
+
+        <button class="hm-scroll-btn right" data-target="artist" aria-label="avançar">›</button>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- 3) Seus favoritos -->
+    <section id="hm-favorites-panel">
+      <h2 class="hm-section-title">Seus favoritos</h2>
+
+      <div class="hm-carousel hm-carousel--favorites">
+        <button class="hm-scroll-btn left" data-target="favorites" aria-label="voltar">‹</button>
+
+        <div class="hm-scroll-container" id="carousel-favorites">
+
+          {% if favorite_tracks %}
+            {% for track in favorite_tracks %}
+              <div class="hm-music-card">
+
+                {% if track.cover_url %}
+                  <img src="{{ track.cover_url }}" alt="Capa de {{ track.title }}" class="hm-music-cover">
+                {% else %}
+                  <div class="hm-music-cover hm-music-cover--placeholder">🎵</div>
+                {% endif %}
+
+                <div class="hm-music-info">
+                  <div class="hm-music-title">{{ track.title }}</div>
+
+                  {% if track.artist_name %}
+                    <div class="hm-music-artist">{{ track.artist_name }}</div>
+                  {% endif %}
+                </div>
+
+                <form method="POST"
+                      action="{{ url_for('toggle_favorite', music_id=track.id) }}"
+                      class="hm-fav-form">
+                  <button type="submit" class="hm-fav-btn">
+                    {% if track.id in favorite_ids %}★{% else %}☆{% endif %}
+                  </button>
+                </form>
+
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>Você ainda não favoritou nenhuma música.</p>
+          {% endif %}
+
+        </div>
+
+        <button class="hm-scroll-btn right" data-target="favorites" aria-label="avançar">›</button>
+      </div>
+    </section>
+
+    <!-- ======================== -->
+    <!--        Painel admin       -->
+    <!-- ======================== -->
+    {% if user_role == 'admin' %}
+
+    <section id="hm-admin-panel">
+      <h2 class="hm-section-title">Painel Administrativo</h2>
+
+      <div class="hm-admin-options">
+        <button class="hm-btn hm-btn--outline" onclick="openAdmin('users')">Ver usuários</button>
+        <button class="hm-btn hm-btn--outline" onclick="openAdmin('uploads')">Ver uploads</button>
+        <button class="hm-btn hm-btn--outline" onclick="openAdmin('stats')">Estatísticas</button>
+      </div>
+    </section>
+
+    <!-- Box: usuários -->
+    <div id="admin-users" class="hm-admin-box" style="display:none;">
+      <h3 class="hm-section-title">Usuários</h3>
+
+      <table class="hm-table">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Nickname</th>
+          <th>Função</th>
+          <th>Ações</th>
+        </tr>
+
+        {% for u in admin_users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.first_name }} {{ u.last_name }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.nickname }}</td>
+          <td>{{ u.role }}</td>
+          <td>
+            <button class="hm-btn-icon" onclick="openEditModal({{ u.id }}, '{{ u.first_name }}', '{{ u.last_name }}', '{{ u.nickname }}', '{{ u.role }}')">✏️</button>
+
+            {% if u.email != 'seed@harmonic.com' and u.id != session['user_id'] %}
+            <button class="hm-btn-icon danger" onclick="openDeleteModal({{ u.id }}, '{{ u.nickname }}')">🗑️</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Box: uploads -->
+    <div id="admin-uploads" class="hm-admin-box" style="display:none;">
+      <h3 class="hm-section-title">Músicas enviadas</h3>
+
+      <table class="hm-table">
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Artista</th>
+          <th>Enviado por</th>
+        </tr>
+
+        {% for m in admin_uploads %}
+        <tr>
+          <td>{{ m.id }}</td>
+          <td>{{ m.title }}</td>
+          <td>{{ m.artist_name }}</td>
+          <td>{{ m.artist.nickname }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Box: estatísticas -->
+    <div id="admin-stats" class="hm-admin-box" style="display:none;">
+      <h3 class="hm-section-title">Estatísticas</h3>
+
+      <p><b>Total de usuários:</b> {{ admin_stats.total_users }}</p>
+      <p><b>Total de músicas:</b> {{ admin_stats.total_musics }}</p>
+      <p><b>Total de favoritos:</b> {{ admin_stats.total_favorites }}</p>
+    </div>
+
+    {% endif %}
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <h3>Editar Usuário</h3>
+
+        <form method="POST" action="/admin/update_user" id="editForm">
+          <input type="hidden" name="id" id="edit_id">
+
+          <label>Primeiro nome</label>
+          <input type="text" name="first_name" id="edit_first">
+
+          <label>Sobrenome</label>
+          <input type="text" name="last_name" id="edit_last">
+
+          <label>Nickname</label>
+          <input type="text" name="nickname" id="edit_nick">
+
+          <label>Função</label>
+          <select name="role" id="edit_role">
+            <option value="listener">Ouvinte</option>
+            <option value="artist">Artista</option>
+            <option value="admin">Administrador</option>
+          </select>
+
+          <button class="hm-btn hm-btn--primary">Salvar</button>
+          <button type="button" class="hm-btn hm-btn--ghost" onclick="closeEditModal()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+    <div id="deleteModal" class="modal">
+      <div class="modal-content danger">
+        <h3>Excluir Usuário</h3>
+        <p>Tem certeza que deseja remover <b id="deleteUserNick"></b>?</p>
+
+        <form method="POST" action="/admin/delete_user" id="deleteForm">
+          <input type="hidden" name="id" id="delete_id">
+          <button class="hm-btn hm-btn--danger">Excluir</button>
+          <button type="button" class="hm-btn hm-btn--ghost" onclick="closeDeleteModal()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="hm-foot">
+    <small>© <span id="year"></span> Harmonic. Todos os direitos reservados.</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

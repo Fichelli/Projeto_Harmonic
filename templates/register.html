@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Harmonic — Cadastro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body id="page-register">
+  <div class="hm-bg" aria-hidden="true">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+    <div id="eq" class="hm-eq" aria-hidden="true"></div>
+  </div>
+
+  <main class="hm-shell" role="main">
+    <section class="hm-register">
+      <div class="hm-register__brand">
+        <div class="hm-logo" aria-hidden="true">
+          <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Logo Harmonic">
+        </div>
+        <h1 class="hm-title hm-register__title">Harmonic</h1>
+        <p class="hm-subtitle hm-register__subtitle">crie sua conta e entre na vibe</p>
+      </div>
+
+      <!-- flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash">
+            {% for category, msg in messages %}
+              <div class="flash__item flash__item--{{ category }}">{{ msg }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form class="hm-form" id="registerForm" method="POST" action="{{ url_for('register') }}" autocomplete="on" novalidate>
+        <div class="hm-grid-2">
+          <label class="hm-field">
+            <span class="hm-field__label">Nome</span>
+            <input id="firstName" name="firstName" type="text" class="hm-input" placeholder="Seu nome" required />
+          </label>
+          <label class="hm-field">
+            <span class="hm-field__label">Sobrenome</span>
+            <input id="lastName" name="lastName" type="text" class="hm-input" placeholder="Seu sobrenome" required />
+          </label>
+        </div>
+
+        <label class="hm-field">
+          <span class="hm-field__label">CPF</span>
+          <input id="cpf" name="cpf" type="text" class="hm-input" placeholder="000.000.000-00" maxlength="14" required />
+        </label>
+
+        <label class="hm-field">
+          <span class="hm-field__label">E-mail</span>
+          <input id="email" name="email" type="email" class="hm-input" placeholder="seuemail@exemplo.com" required />
+        </label>
+
+        <label class="hm-field">
+          <span class="hm-field__label">Tipo de usuário</span>
+          <select id="userType" name="userType" class="hm-input" required>
+            <option value="">Selecione...</option>
+            <option value="listener">Ouvinte</option>
+            <option value="artist">Artista</option>
+          </select>
+        </label>
+
+        <label class="hm-field">
+          <span class="hm-field__label">Nome de exibição (nickname)</span>
+          <input id="nickname" name="nickname" type="text" class="hm-input" placeholder="como quer ser reconhecido" required />
+        </label>
+
+        <div class="hm-grid-2">
+          <label class="hm-field">
+            <span class="hm-field__label">Senha</span>
+            <input id="password" name="password" type="password" class="hm-input" placeholder="••••••••" required />
+          </label>
+          <label class="hm-field">
+            <span class="hm-field__label">Confirmar senha</span>
+            <input id="confirmPassword" name="confirmPassword" type="password" class="hm-input" placeholder="repita a senha" required />
+          </label>
+        </div>
+
+        <div class="hm-actions hm-actions--column">
+          <button type="submit" class="hm-btn hm-btn--primary">Cadastrar</button>
+          <a class="hm-btn hm-btn--outline" href="{{ url_for('login') }}">Voltar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hm-foot">
+    <small>© <span id="year"></span> Harmonic. Todos os direitos reservados.</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

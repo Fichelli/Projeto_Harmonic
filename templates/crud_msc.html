@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Nova Música — Harmonic</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body id="page-add-music">
+
+  <!-- Fundo decorativo -->
+  <div class="hm-bg">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+  </div>
+
+  <!-- Equalizer -->
+  <div class="hm-eq">
+    <div class="hm-eq__bar" style="animation-delay:0s"></div>
+    <div class="hm-eq__bar" style="animation-delay:.2s"></div>
+    <div class="hm-eq__bar" style="animation-delay:.4s"></div>
+    <div class="hm-eq__bar" style="animation-delay:.6s"></div>
+    <div class="hm-eq__bar" style="animation-delay:.8s"></div>
+  </div>
+
+  <main class="hm-shell">
+    <div class="hm-center">
+
+      <h1 class="hm-title">Cadastrar Música</h1>
+      <p class="hm-subtitle">Adicione sua faixa à plataforma</p>
+
+      <!-- FORMULÁRIO CORRETO -->
+      <form class="hm-form" method="POST" action="{{ url_for('crud_msc') }}">
+
+        <div class="hm-field">
+          <label class="hm-field__label">Título da música</label>
+          <input type="text" class="hm-input" name="title" placeholder="Ex: Sol da Madrugada" required>
+        </div>
+
+        <div class="hm-field">
+          <label class="hm-field__label">Nome do artista</label>
+          <input type="text" class="hm-input" name="artist_name" placeholder="Seu nome artístico (opcional)">
+        </div>
+
+        <div class="hm-field">
+          <label class="hm-field__label">Estilo musical</label>
+          <select class="hm-input" name="genre" required>
+            <option value="" selected disabled>Selecione...</option>
+            <option value="Samba">Samba</option>
+            <option value="Rap">Rap</option>
+            <option value="Funk">Funk</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+            <option value="Trap">Trap</option>
+            <option value="MPB">MPB</option>
+            <option value="Eletrônica">Eletrônica</option>
+          </select>
+        </div>
+
+        <div class="hm-field">
+          <label class="hm-field__label">URL da capa (opcional)</label>
+          <input type="url" class="hm-input" name="cover_url" placeholder="https://exemplo.com/capa.jpg">
+        </div>
+
+        <div class="hm-actions">
+          <button type="submit" class="hm-btn hm-btn--primary">Salvar</button>
+          <a href="{{ url_for('home') }}" class="hm-btn hm-btn--ghost">Cancelar</a>
+        </div>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer class="hm-foot">
+    © 2025 Harmonic — Todos os direitos reservados.
+  </footer>
+
+</body>
+</html>

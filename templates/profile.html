@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Meu Perfil — Harmonic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body id="page-register">
+  <div class="hm-bg" aria-hidden="true">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+    <div id="eq" class="hm-eq" aria-hidden="true"></div>
+  </div>
+
+  <main class="hm-shell" role="main">
+    <section class="hm-register">
+      <div class="hm-register__brand">
+        <div class="hm-logo" aria-hidden="true">
+          <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Logo Harmonic">
+        </div>
+        <h1 class="hm-title hm-register__title">Meu perfil</h1>
+        <p class="hm-subtitle hm-register__subtitle">atualize suas informações</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash">
+            {% for category, msg in messages %}
+              <div class="flash__item flash__item--{{ category }}">{{ msg }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form class="hm-form" method="POST" action="{{ url_for('profile') }}">
+        <div class="hm-grid-2">
+          <label class="hm-field">
+            <span class="hm-field__label">Nome</span>
+            <input name="first_name" type="text" class="hm-input" value="{{ user.first_name }}" required>
+          </label>
+          <label class="hm-field">
+            <span class="hm-field__label">Sobrenome</span>
+            <input name="last_name" type="text" class="hm-input" value="{{ user.last_name }}" required>
+          </label>
+        </div>
+
+        <label class="hm-field">
+          <span class="hm-field__label">E-mail</span>
+          <input name="email" type="email" class="hm-input" value="{{ user.email }}" required>
+        </label>
+
+        <label class="hm-field">
+          <span class="hm-field__label">Nickname</span>
+          <input name="nickname" type="text" class="hm-input" value="{{ user.nickname }}" required>
+        </label>
+
+        <label class="hm-field">
+          <span class="hm-field__label">Nova senha (opcional)</span>
+          <input name="password" type="password" class="hm-input" placeholder="Deixe em branco para manter a atual">
+        </label>
+
+        <div class="hm-actions hm-actions--column">
+          <button type="submit" class="hm-btn hm-btn--primary">Salvar alterações</button>
+          <a href="{{ url_for('home') }}" class="hm-btn hm-btn--outline">Voltar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hm-foot">
+    <small>© <span id="year"></span> Harmonic. Todos os direitos reservados.</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Harmonic — Música Independente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Harmonic — descubra e apoie artistas independentes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Fundo decorativo -->
+  <div class="hm-bg" aria-hidden="true">
+    <div class="hm-blob hm-blob--tl"></div>
+    <div class="hm-blob hm-blob--br"></div>
+    <div id="eq" class="hm-eq" aria-hidden="true"></div>
+  </div>
+
+  <!-- Conteúdo centralizado -->
+  <main class="hm-shell" role="main">
+    <section class="hm-center">
+      <!-- Logo -->
+      <div class="hm-logo" aria-hidden="true">
+        <img src="{{ url_for('static', filename='img/logoHarmonic.png') }}" alt="Logo Harmonic">
+      </div>
+
+      <!-- Nome e slogan -->
+      <h1 class="hm-title">Harmonic</h1>
+      <p class="hm-subtitle">música independente, de verdade</p>
+
+      <!-- Texto -->
+      <p class="hm-about-text">
+        O <strong>Harmonic</strong> conecta ouvintes e 
+        <strong>artistas independentes</strong> em um espaço onde autenticidade vem primeiro.
+        Descubra novos sons, apoie quem cria e fique mais perto de quem inspira.
+      </p>
+
+      <!-- Botão -->
+      <a href="{{ url_for('login') }}" class="hm-btn hm-btn--primary" aria-label="Ir para a página de login">
+        Entrar na plataforma
+        <span class="hm-arrow" aria-hidden="true">→</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="hm-foot">
+    <small>© <span id="year"></span> Harmonic. Todos os direitos reservados.</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
